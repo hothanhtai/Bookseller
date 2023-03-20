@@ -1,0 +1,55 @@
+﻿@model BookSeller.Models.Author
+
+@{
+	ViewData["Title"] = "Details";
+}
+
+<h1>Giới thiệu tác giả</h1>
+
+<div>
+	<h4>@Model.FullName</h4>
+	<hr />
+	<div class="row">
+
+		<table class="table">
+
+			<tr>
+				<td width="500px">
+					<div class="col-form-label">
+						<img src="@("/Img/Author/"+Model.ProfilePictureURL)"
+							 alt="@Model.FullName" style="max-width:350px" />
+					</div>
+				</td>
+				<td>
+					<div class="text-lg-start">
+						<p>
+							@Model.Bio
+						</p>
+					</div>
+				</td>
+			</tr>
+			
+				
+			
+		</table>
+		<div>
+			<h4>Tác phẩm tiêu biểu</h4>
+			@foreach (Book item in ViewBag.bookAuthor)
+			{ <a asp-controller="Books" asp-action="Details" asp-route-id="@item.Id">
+				<img src="@("/Img/Book/"+item.ImageURL)" alt="@item.Name" style="max-width:120px;margin:20px;border:solid #000" />
+			  </a>
+			}
+		</div>
+		<div>
+			@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+			{
+				<a class="btn btn-success float-end" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+			}
+ 
+			<a class="btn btn-primary" asp-controller="Books" asp-action="Index">Back to List</a>
+		</div>
+	</div>
+</div>
+
+</div>
+	

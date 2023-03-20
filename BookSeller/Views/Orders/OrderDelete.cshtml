@@ -1,0 +1,67 @@
+﻿@model List<Order>
+
+@{ 
+    ViewData["Title"] = "All orders";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h4>Danh sách Order đã huỷ</h4>
+            <a asp-action="Index" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> &nbsp;Order mới
+            </a>
+            <a asp-action="OrderComfirmed" class="btn btn-success">
+                <i class="bi bi-check2-circle"></i> &nbsp;Order đã xác nhận
+            </a>
+        </p>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th colspan="2">Order ID</th>
+                    <th>Tên Sách</th>
+                    <th>Tổng thanh toán</th>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <th>User</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                 
+                <tr>
+                    <td class="align-middle">@order.Id</td>
+                    <td class="align-middle">
+                        <ul style="list-style-type:none">
+                            @foreach (var item in order.OrderItems)
+                            {
+                                <li>
+                                    <div class="alert alert-info" role="alert">
+                                        <span class="badge bg-success">@item.Amount</span> [@item.Price.ToString()] - @item.Book.Name
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </td>
+                    <td class="align-middle">
+                            @order.OrderItems.Select(m => m.Book.Price * m.Amount).Sum().ToString()
+                    </td>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <td class="align-middle"> @order.User.FullName </td>
+                        <td class="align-middle">
+                                <a asp-action="Details" asp-route-id="@order.Id" class="btn btn-primary">
+                                    <i class="bi bi-pencil-square"></i> &nbsp;Detail
+                                </a>
+                        </td>
+                    }
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

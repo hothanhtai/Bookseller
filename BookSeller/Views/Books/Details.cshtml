@@ -1,0 +1,106 @@
+﻿@model BookSeller.Models.Book
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <div class="card mb-12">
+            <div class="row g-0">
+                <div class="col-md-12">
+                    <div class="card-header text-white bg-info">
+                        <p class="card-text">
+                            <h5 class="card-title">
+                                @Model.Name
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                                {
+                                    <a asp-action="Edit" asp-route-id="@Model.Id" class="text-white float-end"><i class="bi bi-pencil-square"></i></a>
+                                }
+                            </h5>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <img src="@("/Img/Book/"+Model.ImageURL)" style="width:100%"  alt="@Model.Name">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <p class="card-text">@Model.Description</p>
+                        <p class="card-text">
+                            <b>Nhà xuất bản: </b>
+                            <a asp-controller="Publishers" asp-action="Details" asp-route-id="@Model.Publisher.Id" style="text-decoration-line: none;">
+                                @Model.Publisher.FullName
+                            </a>
+                        </p>                      
+                        <p class="card-text">
+                            <b>Thể Loại: @Model.Category.Name </b>@{
+                            
+                        }</p>
+                        <p class="card-text"><b> Năm Xuất Bản: </b>@Model.PublishingYear</p>                                            
+                        <p class="card-text">
+                            <b>Tác giả: </b>
+                            <hr />
+                            <div class="row">                             
+                                    <div class="column text-center">
+                                        <img class="border-info rounded-circle" src="@("/Img/Author/"+Model.Author.ProfilePictureURL)" style="max-width: 150px" />
+                                        <br />
+                                    <a asp-controller="Authors" asp-action="Details" asp-route-id="@Model.Author.Id" style="text-decoration-line: none;">@Model.Author.FullName</a>
+                                    </div>                             
+                            </div>
+                        </p>
+
+                    </div>
+                </div>
+                <div class="col-md-12 mb-2">
+                    <div class="card-footer">
+                        <p class="card-text">
+                            <a class="btn btn-primary float-start" asp-action="Index">
+                                <i class="bi bi-arrow-return-left"></i> &nbsp;Trở về
+                            </a>
+                            <a class="btn btn-success text-white float-end"
+                               asp-controller="Orders"
+                               asp-action="AddItemToShoppingCart" asp-route-id="@Model.Id"><i class="bi bi-cart-plus"></i> Thêm vào giỏ hàng (@Model.Price.ToString("#,###") VNĐ)</a>
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    @if (ViewBag.bookAuthor != null)
+                    {
+                        <h4>Cùng tác giả</h4>
+                        @foreach (Book item in ViewBag.bookAuthor)
+                        {
+                            <a asp-controller="Books" asp-action="Details" asp-route-id="@item.Id">
+                                <img src="@("/Img/Book/"+item.ImageURL)" alt="@item.Name" style="max-width:120px;margin:20px;border:solid #000" />
+                            </a>
+                        }
+                    }
+                </div>
+                <div>
+                    @if (ViewBag.bookPublisher != null)
+                    {
+                        <h4>Cùng Nhà xuất bản</h4>
+                        @foreach (Book item in ViewBag.bookPublisher)
+                        {
+                            <a asp-controller="Books" asp-action="Details" asp-route-id="@item.Id">
+                                <img src="@("/Img/Book/"+item.ImageURL)" alt="@item.Name" style="max-width:120px;margin:20px;border:solid #000" />
+                            </a>
+                        }
+                    }
+                </div>
+                <div>
+                    @if (ViewBag.bookCate != null)
+                    {
+                        <h4>Cùng Thể loại</h4>
+                        @foreach (Book item in ViewBag.bookCate)
+                        {
+                            <a asp-controller="Books" asp-action="Details" asp-route-id="@item.Id">
+                                <img src="@("/Img/Book/"+item.ImageURL)" alt="@item.Name" style="max-width:120px;margin:20px;border:solid #000" />
+                            </a>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

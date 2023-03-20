@@ -1,0 +1,10 @@
+﻿@model int
+@inject UserManager<ApplicationUser> UserManager;
+@if (Model > 0 || User.Identity.IsAuthenticated)
+{
+	<li class="nav-item">
+		<a class="btn btn-outline-warning nav-link text-primary" asp-controller="Orders" asp-action="ShoppingCart">
+			Giỏ Hàng<i class="bi bi-cart4"></i> @Model
+		</a>
+	</li>
+}

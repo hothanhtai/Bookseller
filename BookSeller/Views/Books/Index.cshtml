@@ -1,0 +1,97 @@
+﻿@model IEnumerable<BookSeller.Models.Book>
+
+@{
+    ViewData["Title"] = "BookIndex";
+}
+@if (ViewBag.emtyCate != null)
+{
+	<h2>
+		@ViewBag.emtyCate
+	</h2>
+}
+@if (ViewBag.emty != null)
+{
+	<h2>
+		@ViewBag.emty
+	</h2>
+}
+@*<h1>Sách mới hôm nay</h1>*@
+<div class="row">
+	
+		
+	@foreach (var item in Model)
+	{
+		<div class="col-md-4 col-xs-6 border-primary mb-3">
+			<div class="card mb-3" style="max-width: 540px;">
+				<div class="row g-0">
+					<div class="col-md-12">
+						<div class="card-header text-white bg-info">
+							<p class="card-text">
+								<h5 class="card-title">
+									@item.Name
+									@if(User.Identity.IsAuthenticated && User.IsInRole("Admin")){
+										<a asp-action="Edit" asp-route-id="@item.Id" class="text-white float-end"><i class="bi bi-pencil-square"></i></a>
+									}
+								</h5>
+							</p>
+						</div>
+					</div>
+					<div class="col-md-6 ">
+						<img class="border border-dark rounded" src="@("/Img/Book/"+item.ImageURL)" width="207px" height="327px" alt="@item.Name">
+					</div>
+					<div class="col-md-6">
+						<div class="card-body">
+							@*<p class="card-text">@item.Description</p>*@
+							<p class="card-text"><b>Tác giả: </b>@item.Author.FullName</p>
+							<p class="card-text"><b>Thể Loại: </b>@item.Category.Name</p>							
+							<p class="card-text"><b>Năm Xuất Bản: </b>@item.PublishingYear</p>
+							<p class="card-text"><b>Giá:  </b>@item.Price.ToString("#,###") VNĐ</p>
+							
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="card-footer" style="padding:10px">
+							<p class="card-text" >
+								<div>
+								<a asp-action ="Details" asp-route-id="@item.Id" class="btn btn-primary" style="float:left;margin-right:10px"><i class="bi bi-eye-fill"></i> Xem chi tiết</a>
+								<a class="btn btn-success text-white"  asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="@item.Id"><i class="bi bi-cart-plus"></i> Thêm vào giỏ hàng </a>
+
+								</div>
+
+								
+
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+</div>
+
+@await Html.PartialAsync("_CreateItem", "Books")
+@section Scripts{
+	<script>
+		var activities = document.getElementById("categoryBooks");
+		activities.addEventListener("change", function () {
+			if (activities.value == "0") {
+				goIndex();
+			}
+			else{
+				goCategory();
+			}
+		});
+		function goIndex(){
+			var url = '@Url.Action("Index", "Books")';
+			window.location.href = url;
+		}
+		function goCategory(){
+			var url = '@Url.Action("Category", "Books")?category=' + activities.value;
+			window.location.href = url;
+		}
+	</script>
+	<script>
+		var element = document.getElementById("categoryBooks");
+		element.value = @TempData["Cate"]
+	</script>
+}

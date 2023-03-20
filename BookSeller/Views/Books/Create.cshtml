@@ -1,0 +1,88 @@
+﻿@model BookSeller.Models.Book
+@{
+	ViewData["Title"] = "Thêm sách mới";
+}
+
+<div class="row">
+	<div class="col-md-8 offset-2">
+		<p>
+			<h4>Thêm sách mới</h4>
+		</p>
+
+		<div class="row">
+			<div class="col-md-8 offset-2">
+				<form asp-action="Create" enctype="multipart/form-data">
+					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label asp-for="Name" class="control-label"></label>
+								<input asp-for="Name" class="form-control" />
+								<span asp-validation-for="Name" class="text-danger"></span>
+							</div>
+							<div class="form-group">
+								<label asp-for="PublisherId" class="control-label"></label>
+								<select asp-for="PublisherId" class="form-control text-success" asp-items="ViewBag.PublisherId"></select>
+								<span asp-validation-for="PublisherId" class="text-danger"></span>
+							</div>
+							<div class="form-group">
+								<label asp-for="Price" class="control-label"></label>
+								<input asp-for="Price" type="number" class="form-control" />
+								<span asp-validation-for="Price" class="text-danger"></span>
+							</div>
+							<div class="col-form-label">
+								<label asp-for="PictureFile" class="control-label"></label>
+								<input asp-for="PictureFile" accept="image/*" />
+								<span asp-validation-for="PictureFile" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label asp-for="AuthorId" class="control-label"></label>
+								<select asp-for="AuthorId" class="form-control text-success" asp-items="ViewBag.AuthorId"></select>
+								<span asp-validation-for="AuthorId" class="text-dansp-items=" Vger"></span>
+							</div>
+							<div class="form-group">
+								<label asp-for="PublishingYear" class="control-label"></label>
+								<input asp-for="PublishingYear" type="number" class="form-control" />
+								<span asp-validation-for="PublishingYear" class="text-danger"></span>
+							</div>
+							<div class="form-group">
+								<label asp-for="CategoryId" class="control-label"></label>
+								<select asp-for="CategoryId" class="form-control text-success" asp-items="ViewBag.CategoryId"></select>
+								<span asp-validation-for="CategoryId" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="form-group">
+								<label asp-for="Description" class="control-label"></label>
+								<textarea asp-for="Description" class="form-control"></textarea>
+								<span asp-validation-for="Description" class="text-danger"></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4 offset-4 text-center">
+						<img width="100%" id="ImageUrlPreview" />
+					</div>
+
+					<div class="form-group float-end">
+						<input type="submit" value="Create" class="btn btn-success" />
+						<a class="btn btn-secondary" asp-action="Index">Show all</a>
+					</div>
+
+				</form>
+
+			</div>
+		</div>
+
+	</div>
+</div>
+
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+	}

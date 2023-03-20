@@ -1,0 +1,169 @@
+﻿@model BookSeller.Data.ViewModels.RegisterViewModel
+@{
+	ViewData["Title"] = "Sign-up";
+}
+
+<div class="row">
+	<div class="col-md-6 offset-3">
+		<p>
+			<h4>Đăng ký tài khoản mới</h4>
+		</p>
+
+		@if (TempData["Error"] != null)
+		{
+			<div class="col-md-12 alert alert-danger">
+				<span><b>Sorry!</b> - @TempData["Error"] </span>
+			</div>
+		}
+		@if (ViewBag.Error != null)
+		{
+			List<Microsoft.AspNetCore.Identity.IdentityError> errors = ViewBag.Error;
+			foreach (var item in errors)
+			{
+				<div class="col-md-12 alert alert-danger">
+					<span><b>Sorry!</b> - @item.Description </span>
+				</div>
+			}
+			
+		}
+		<div class="row">
+			<div class="col-md-8 offset-2">
+				<form asp-action="Register">
+					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+					<div class="col-form-label">
+						<label asp-for="FullName" class="control-label"></label>
+						<input asp-for="FullName" class="form-control" />
+						<span asp-validation-for="FullName" class="text-danger"></span>
+					</div>
+					<div class="col-form-label">
+						<label asp-for="EmailAddress"  class="control-label"></label>
+						<input asp-for="EmailAddress" type="email" class="form-control" />
+						<span asp-validation-for="EmailAddress" class="text-danger"></span>
+					</div>
+					<div class="col-form-label">
+						<label asp-for="Password" class="control-label"></label>
+						<div class="filed">
+							<input asp-for="Password" id="inpPassword" class="form-control" />
+							<span class="eye-close"><i id="icon" class="bi bi-eye" style="width:150px"></i></span>
+							<span asp-validation-for="Password" class="text-danger"></span>
+						</div>
+						
+						
+					</div>
+					<div class="col-form-label">
+						<label asp-for="ConfirmPassword" class="control-label"></label>
+						<div class="filed">
+							<input asp-for="ConfirmPassword" id="inpCPassword" class="form-control" />
+							<span class="eye-close"><i id="iconCPass" class="bi bi-eye" style="width:150px"></i></span>
+							<span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+						</div>
+						
+						
+					</div>
+
+					<div class="col-form-label float-end">
+						<input class="btn btn-success" type="submit" value="Đăng ký" />
+						<a class="btn btn-secondary" asp-controller="Books" asp-action="Index">Hủy</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<style>
+	.filed {
+		position: relative;
+	}
+
+	.eye-open {
+		z-index: 99;
+		cursor: pointer;
+		position: absolute;
+		right: 10px;
+		top: 50%;
+		transform: translateY(-50%);
+		color: white;
+	}
+
+	.eye-close {
+		z-index: 99;
+		cursor: pointer;
+		position: absolute;
+		right: 10px;
+		top: 50%;
+		transform: translateY(-50%);
+		color: white;
+	}
+
+	.hidden {
+		display: none;
+	}
+</style>
+
+
+@*
+   //const handleTypeClose = () =>{
+   //     let openEye = document.getElementsByClassName(".eye-open");
+   //     let closeEye = document.getElementsByClassName(".eye-close");
+   //     let inputPassword = document.getElementById("#password")
+   //    console.log("close");
+   //    inputPassword.setAttribute("type","text");
+   //     openEye.classList.remove("hidden");
+   //     closeEye.classList.add("hidden");
+   //}
+
+   // const handleTypeOpen = () => {
+   //      let openEye = document.getElementsByClassName("eye-open");
+   //      let closeEye = document.getElementsByClassName("eye-close");
+   //      let inputPassword = document.getElementById("password")
+   //        console.log("open");
+
+   //     inputPassword.setAttribute("type","password");
+   //     openEye.classList.add("hidden");
+   //     closeEye.classList.remove("hidden");
+   // }*@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+	$(document).ready(function () {
+		
+		$('#icon').click(function () {
+			if ($('#icon').hasClass('bi bi-eye')) {
+				$('#icon').removeClass('bi bi-eye').addClass('bi bi-eye-slash');
+				$('#inpPassword').attr('type', 'text');
+			} else {
+				$('#icon').removeClass('bi bi-eye-slash').addClass('bi bi-eye');
+				$('#inpPassword').attr('type', 'password');
+			}
+		});
+	
+	});
+
+	//$(document).ready(function () {
+
+	//	$('#icon1').click(function () {
+	//		if ($('#icon1').hasClass('bi bi-eye-fill')) {
+	//			$('#icon1').removeClass('bi bi-eye-fill').addClass('bi bi-eye-slash-fill');
+	//			$('#inpCPassword').attr('type', 'text');
+	//		} else {
+	//			$('#icon1').removeClass('bi bi-eye-slash-fill').addClass('bi bi-eye-fill');
+	//			$('#inpCPassword').attr('type', 'password');
+	//		}
+	//	});
+
+	//});
+
+	$(document).ready(function () {
+
+		$('#iconCPass').click(function () {
+			if ($('#iconCPass').hasClass('bi bi-eye')) {
+				$('#iconCPass').removeClass('bi bi-eye').addClass('bi bi-eye-slash');
+				$('#inpCPassword').attr('type', 'text');
+			} else {
+				$('#iconCPass').removeClass('bi bi-eye-slash').addClass('bi bi-eye');
+				$('#inpCPassword').attr('type', 'password');
+			}
+		});
+	});
+</script>

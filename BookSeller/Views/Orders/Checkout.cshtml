@@ -1,0 +1,100 @@
+﻿@model Order
+
+@{
+	ViewData["Title"] = "Check out";
+}
+
+<div class="row">
+	<div class="col-md-8 offset-2">
+		<p>
+			<h4>
+				Nhập thông tin thanh toán
+			</h4>
+		</p>
+
+		<div class="row">
+			<div class="col-md-8 offset-2">
+				<div class="row">
+					<div class="col-md-6">
+						Tổng tiền thanh toán: @ViewBag.Total VNĐ
+					</div>
+					<div class="col-md-6">
+						<form asp-action="CompleteOrder" name="thongtin">
+						
+							<div class="form-group">
+								<label asp-for="Name" class="col-form-label"></label>
+								<input name="Name" asp-for="Name" class="form-control" />
+								<span asp-validation-for="Name" class="text-danger"></span>
+							</div>
+							<div class="form-group">
+								<label asp-for="PhoneNumber" class="col-form-label"></label>
+								<input name="Phone" asp-for="PhoneNumber" class="form-control" />
+								<span asp-validation-for="PhoneNumber" class="text-danger"></span>
+							</div>
+							<div class="form-group">
+								<label asp-for="Address" class="col-form-label"></label>
+								<input name="Address" asp-for="Address" class="form-control" />
+								<span asp-validation-for="Address" class="text-danger"></span>
+							</div>
+							<div class="form-group mt-2">
+								<input type="submit" value="Thanh Toán" class="btn btn-success float-end" />
+								<a class="btn btn-outline-secondary" asp-action="ShoppingCart"><i class="bi bi-arrow-return-left"></i>Giỏ hàng</a>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> 
+</div>
+@section Scripts{
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+	<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
+	<script>
+
+		let _total = @Html.Raw(Math.Round(ViewBag.Total/23250,2));
+
+		paypal.Button.render({
+			//Configure environment
+			env: 'sandbox',
+			client: {
+				sandbox: 'AcKRtgL4i68EZ2ZYuYUx3ilihAg2YhL5dtF_m19A8MjBWVOn6ewNS4M_uV8gA3xi98zTcUq38gUHbVFx'
+			},
+
+			//Customize button
+			locale: 'en_US',
+			style: {
+				size: 'small',
+				color: 'gold',
+				shape: 'pill'
+			},
+			commit: true,
+
+			//Set up a payment
+			payment: function (data, actions) {
+				return actions.payment.create({
+					transactions: [{
+						amount: {
+							total: _total,
+							currency: 'USD'
+						}
+					}]
+				});
+			},
+			//Execute the payment
+			onAuthorize: function (data, actions) {
+				console.log(document.thongtin.Name.value)
+				return actions.payment.execute().then(function () {
+					if (document.thongtin.Name.value == "" || document.thongtin.Phone.value=="" || document.thongtin.Address.value==""){
+						alert("Vui long nhap thong tin giao hang")
+					}
+					else {var url = '@Url.Action("CompleteOrder", "Orders")?name=' + document.thongtin.Name.value + '&phone=' + document.thongtin.Phone.value + '&address=' + document.thongtin.Address.value;
+					window.location.href = url;}
+				});
+			}
+		}, '#paypal-btn')
+	</script>
+}

@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BookSeller</title>
+    <link rel="stylesheet" href="~/css/bootwatch.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/BookSeller.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark fixed-top">
+            <div class="container-fluid">
+                <a class="navbar-brand text-secondary" asp-area="" asp-controller="Books" asp-action="Index">5S BookSeller</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarColor01">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active text-secondary" asp-controller="Books" asp-action="Index">
+                                <i class="bi bi-book"></i> Sách 
+                                <span class="visually-hidden">(current)</span>
+                            </a>
+                        </li>
+                      
+                        @if(User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item dropdown">
+                                <span class="nav-link dropdown-toggle show text-info" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+                                    <i class="bi bi-gear"></i>Quản lý
+                                </span>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" asp-controller="Authors" asp-action="Index">
+                                        <i class="bi bi-person-circle"></i> Tác Giả
+                                    </a>
+                                    <a class="dropdown-item" asp-controller="Publishers" asp-action="Index">
+                                        <i class="bi bi-headset"></i> Nhà Xuất Bản
+                                    </a>
+                                    <a class="dropdown-item" asp-controller="Books" asp-action="Index">
+                                         <i class="bi bi-book"></i> Sách 
+                                    </a>
+
+                                </div>
+                            </li>
+                        }
+                        
+                    </ul>
+                    @if (ViewData["Title"] == "BookIndex")
+                    {
+                        <select id="categoryBooks" class="form-select select-book" style="width:200px;margin-right:20px" aria-label="Default select example">
+                            <option value="0">--Thể Loại--</option>
+                            <option value="2">Truyện Tranh</option>
+                            <option value="1">Tiểu Thuyết</option>
+                            <option value="3">Kinh Tế</option>
+                            <option value="4">Giáo dục</option>
+                            <option value="5">Khoa Học</option>
+                            <option value="6">Khác</option>
+                        </select>
+                    }
+                    <ul class="navbar-nav">
+                        @await Component.InvokeAsync("ShoppingCartSummary")
+                    </ul>
+                    <form class="d-flex" asp-controller="Books" asp-action="Filter">
+                        <input name="searchString" class="form-control me-sm-2" type="text"  placeholder="Nhập tên sách muốn tìm">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="bi bi-search"></i></button>
+                    </form>
+                   
+
+                    <partial name="_Identity.cshtml" />
+
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div style="margin-top: 100px;">
+    <div class="container">
+            <partial name="_Notification" />
+        <main role="main" class="pb-3 ">
+            @RenderBody()
+        </main>
+    </div>
+    </div>
+    <footer class="border-top footer text-muted position-fixed bg-primary">
+        <div class="container">
+            &copy; 2023 - BookSeller - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

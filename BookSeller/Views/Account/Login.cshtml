@@ -1,0 +1,115 @@
+﻿@model BookSeller.Data.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="row" >
+    <div class="col-md-6 offset-3">
+        
+            <h4 class="text-center">Đăng nhập</h4>
+        
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="col-md-9 alert alert-danger">
+                <span><b>Sorry!</b> - @TempData["Error"] </span>
+            </div>
+        }
+
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <form asp-action="Login">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="col-form-label">
+                        <label asp-for="EmailAddress" class="control-label"></label>
+                        <input asp-for="EmailAddress" type="email" class="form-control" />
+                        <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                    </div>
+                    <div class="col-form-label">
+                        <label asp-for="Password" class="control-label"></label>
+                        <div class="filed">
+                            <input asp-for="Password" class="form-control" id="password" type="password" />
+                            <span class="eye-close"><i id="icon" class="bi bi-eye" style="width:150px"></i></span>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        
+                    </div>
+
+                    <div class="col-form-label float-end">
+                        <input class="btn btn-success" type="submit" value="Đăng nhập" />
+                        <a class="btn btn-secondary" asp-controller="Books" asp-action="Index">Hủy</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .filed {
+        position: relative;
+    }
+
+    .eye-open {
+        z-index: 99;
+        cursor: pointer;
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: white;
+    }
+
+    .eye-close {
+        z-index: 99;
+        cursor: pointer;
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: white;
+    }
+
+    .hidden {
+        display: none;
+    }
+</style>
+
+   
+ @*  
+   //const handleTypeClose = () =>{
+   //     let openEye = document.getElementsByClassName(".eye-open");
+   //     let closeEye = document.getElementsByClassName(".eye-close");
+   //     let inputPassword = document.getElementById("#password")
+   //    console.log("close");
+   //    inputPassword.setAttribute("type","text");
+   //     openEye.classList.remove("hidden");
+   //     closeEye.classList.add("hidden");
+   //}
+
+   // const handleTypeOpen = () => {
+   //      let openEye = document.getElementsByClassName("eye-open");
+   //      let closeEye = document.getElementsByClassName("eye-close");
+   //      let inputPassword = document.getElementById("password")
+   //        console.log("open");
+
+   //     inputPassword.setAttribute("type","password");
+   //     openEye.classList.add("hidden");
+   //     closeEye.classList.remove("hidden");
+   // }*@
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function(){
+    $('#icon').click(function(){
+            if ($('#icon').hasClass('bi bi-eye')) {
+                $('#icon').removeClass('bi bi-eye').addClass('bi bi-eye-slash-fill');
+                    $('#password').attr('type','text');
+        } else {
+                $('#icon').removeClass('bi bi-eye-slash-fill').addClass('bi bi-eye');
+                $('#password').attr('type', 'password');
+        }
+    });
+});
+
+</script>
